@@ -6,6 +6,7 @@ module.exports={
            MongoClient.connect(url,function(err,connection){
                if (err) {
                      console.log(err);
+                     reject(err);
                }
                var mongodb = connection.db('bala123');
                var collection = mongodb.collection('documents');
@@ -24,6 +25,7 @@ module.exports={
           MongoClient.connect(url,function(err,connection){
               if(err) {
                   console.log(err);
+                  reject(err);
               }
               var mongodb = connection.db('bala123');
               var collection = mongodb.collection('documents');
@@ -35,5 +37,64 @@ module.exports={
               });
           });
         });
-    }
-}
+    },
+    deleteMany(data){
+        return new Promise(function(resolve,reject){
+           MongoClient.connect(url,function(err,connection){
+               if(err) {
+                   console.log(err);
+                   reject(err);
+                    }               
+               var mongodb = connection.db('bala123');
+               var collection = mongodb.collection('documents');
+              collection.deleteMany(data).then(function(data){
+                  console.log('doc deleted');
+                  resolve('we have matched ' + data.deletedCount + ' documnets and hence we deleted ' + data.deletedCount);
+              }).catch(function(err){
+                  console.log(err);
+                  reject(err);
+              });
+           });
+        });
+    },
+     updateData(data,update){
+         return new Promise(function(resolve,reject){
+             MongoClient.connect(url,function(err,connection){
+                 if(err){
+                     console.log(err);
+                     reject(err);
+                 }
+                 var mongodb = connection.db('bala123');
+                 var collection = mongodb.collection('documents');
+                 collection.updateMany(data,update).then(function(data){
+                     console.log('datas are updated');
+                     resolve(data.modifiedCount);
+                 }).catch(function(err){
+                     reject(err);
+                 });
+             });
+         });
+     },
+     findData (data){
+         return new Promise (function(resolve,reject){
+             MongoClient.connect(url,function(err,connection){
+                 if(err) {
+                     console.log(err);
+                     reject(err);
+                 }
+                 var mongodb = connection.db('bala123');
+                 var collection = mongodb.collection('documents');
+                 var finddatas = [];
+                 collection.find(data).forEach(function(read){
+                     finddatas.push(read);
+                    resolve(finddatas);
+                 }).then(function(data){
+                    resolve('find documents');
+                 }).catch(function(err){
+                     console.log(err);
+                     reject(err);
+                 });
+             });
+         });
+     }
+};
