@@ -57,7 +57,9 @@ module.exports={
            });
         });
     },
-     updateData(data,update){
+     updateData(data,update,upsert){
+         console.log(upsert);
+         console.log(typeof(upsert));
          return new Promise(function(resolve,reject){
              MongoClient.connect(url,function(err,connection){
                  if(err){
@@ -66,9 +68,14 @@ module.exports={
                  }
                  var mongodb = connection.db('bala123');
                  var collection = mongodb.collection('documents');
-                 collection.updateMany(data,update).then(function(data){
-                     console.log('datas are updated');
-                     resolve(data.modifiedCount);
+                 collection.updateMany(data,update,upsert).then(function(data){
+                     console.log(data)
+                     if (upsert.upsert) {
+                         console.log('new data created');
+                         resolve(data.upsertedId._id);
+                     }else{
+                         resolve(data.modifiedCount);
+                     }
                  }).catch(function(err){
                      reject(err);
                  });

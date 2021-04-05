@@ -2,12 +2,17 @@ var express = require('express');
 var app = express();
 var dbclient = require('./crudService');
 var sample = {
-    name:'bala',
-    age:'25'
-
+    name:"bala",
+age:"24",
+destination:"software devloper",
+salary:"10000",
+place:"hyd",
 };
 var updateall ={
-    $set:{"salary":"10000"}
+    $set:{"salary":"20000"}
+};
+var createOnNoDocErr = {
+    upsert: true
 };
 /*dbclient.createDoc(sample).then(function(call){
     console.log(call);
@@ -24,13 +29,13 @@ var updateall ={
 }).catch(function(err){
     console.log(err);
 });*/
-dbclient.updateData(sample,updateall).then(function(update){
+dbclient.updateData(sample,updateall,createOnNoDocErr).then(function(update){
     console.log(update);
 }).catch(function(err){
     console.log(err);
 });
-dbclient.findData(sample).then(function(find){
+/*dbclient.findData(sample).then(function(find){
     console.log(find);
 }).catch(function(err){
     console.log(err);
-});
+});*/
