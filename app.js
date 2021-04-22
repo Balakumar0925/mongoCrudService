@@ -19,31 +19,37 @@ var createOnNoDocErr = {
 
 
 app.post('/create',function(req,res){
-    
-
-dbclient.createDoc(req.body).then(function(call){
+    console.log('null',req.body);
+    dbclient.createDoc(req.body).then(function(call){
     console.log(call);
-    res.send('data created');
+    res.send({'result':'data created'});
     
 }).catch(function(err){
     console.log(err);
 });
 });
-app.post('/addmany',function(req,res){
 
+
+app.post('/addmany',function(req,res){
+    console.log('1st line');
+    console.log('server', req.body);
 dbclient.createMany(req.body).then(function(docs){
-    console.log(req.body);
+    //console.log(req.body);
     console.log(docs);
-    res.send('datas created');
+    //res.send(docs).status(201);
+    res.status(201).send(docs);
+   // res.sendStatus(201).send(docs);
 }).catch(function(err){
     console.log(err);
 });
 });
+
+
 app.delete('/delete', function(req,res){
 
     dbclient.deleteMany(req.body).then(function(deldata){
     console.log(deldata);
-    res.send('file deleted');
+    res.send(deldata);
 }).catch(function(err){
     console.log(err);
 });
@@ -60,8 +66,9 @@ dbclient.updateData(sample,replaceWith,createOnNoDocErr).then(function(update){
     console.log(err);
 });
 });
+
 app.get('/view' ,function(req,res){
-    
+    console.log(req.body);
 dbclient.findData(req.body).then(function(show){
     res.send(show);
     console.log(show);
