@@ -68,8 +68,10 @@ module.exports={
                  }
                  var mongodb = connection.db('bala123');
                  var collection = mongodb.collection('documents');
+                 console.log('wht is data ', data);
+                 console.log('wht is update', update);
                  collection.updateMany(data,update,upsert).then(function(data){
-                     console.log(data)
+                     console.log(data);
                      if (upsert.upsert) {
                          console.log('new data created');
                          resolve(data.upsertedId._id);
@@ -77,6 +79,7 @@ module.exports={
                          resolve(data.modifiedCount);
                      }
                  }).catch(function(err){
+                     console.log('err', err);
                      reject(err);
                  });
              });
@@ -94,9 +97,8 @@ module.exports={
                  var finddatas = [];
                  collection.find(data).forEach(function(read){
                      finddatas.push(read);
-                    resolve(finddatas);
                  }).then(function(data){
-                    resolve('find documents');
+                    resolve(finddatas);
                  }).catch(function(err){
                      console.log(err);
                      reject(err);
